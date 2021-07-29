@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../store/app.reducer';
 import * as RecipeActions from '../recipes/store/recipe.actions';
+import { Router } from '@angular/router';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-sidebar-menu',
@@ -11,12 +13,21 @@ import * as RecipeActions from '../recipes/store/recipe.actions';
 export class SidebarMenuComponent implements OnInit {
   isManageShown = false;
 
-  constructor(private store: Store<fromRoot.AppState>) {}
+  constructor(
+    private menuController: MenuController,
+    private router: Router,
+    private store: Store<fromRoot.AppState>
+  ) {}
 
   ngOnInit() {}
 
   hideSubmenus() {
     this.isManageShown = false;
+  }
+
+  navigateToRecipes() {
+    this.router.navigate(['/recipes']);
+    this.menuController.close('menu-sidebar');
   }
 
   onFetchDataClicked() {

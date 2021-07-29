@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Recipes</ion-title>
+    <ion-title class="ion-text-center">Recipes</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -32,7 +32,7 @@
 
     <ion-row>
       <ion-col>
-        <ion-button color="success" expand="block">New recipe</ion-button>
+        <ion-button (click)="navigateToRecipeForm()" color="success" expand="block">New recipe</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as fromRoot from '../store/app.reducer';
 import * as RecipeActions from './store/recipe.actions';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-recipes',
@@ -14,7 +15,10 @@ import * as RecipeActions from './store/recipe.actions';
 export class RecipesPage implements OnInit {
   recipes$: Observable<Recipe[]>;
 
-  constructor(private store: Store<fromRoot.AppState>) {}
+  constructor(
+    private router: Router,
+    private store: Store<fromRoot.AppState>
+  ) {}
 
   ngOnInit() {
     this.recipes$ = this.store.select('recipes').pipe(
@@ -22,5 +26,9 @@ export class RecipesPage implements OnInit {
         return state.recipes;
       })
     );
+  }
+
+  navigateToRecipeForm() {
+    this.router.navigate(['/recipes/new']);
   }
 }
