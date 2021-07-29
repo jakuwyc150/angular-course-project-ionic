@@ -16,17 +16,15 @@
       </ion-col>
     </ion-row>
 
-    <ion-row *ngIf="(recipes$ | async).length > 0">
+    <ion-row *ngFor="let recipe of (recipes$ | async)">
       <ion-col>
-        <ion-list>
-          <ion-item *ngFor="let recipe of (recipes$ | async)">
-            <ion-avatar>
-              <img [src]="recipe.imagePath">
-            </ion-avatar>
+        <ion-item>
+          <ion-avatar class="ion-margin-end">
+            <img [src]="recipe.imagePath">
+          </ion-avatar>
 
-            <ion-label>{{ recipe.name }}</ion-label>
-          </ion-item>
-        </ion-list>
+          <ion-label>{{ recipe.name }}</ion-label>
+        </ion-item>
       </ion-col>
     </ion-row>
 
