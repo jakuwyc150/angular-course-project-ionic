@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Recipes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row *ngIf="recipes.length === 0">
+      <ion-col>
+        <ion-item>
+          <ion-label class="ion-text-center">
+            <i>No recipes loaded</i>
+          </ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-button color="success" expand="block">New recipe</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
