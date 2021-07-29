@@ -6,9 +6,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./sidebar-menu.component.scss'],
 })
 export class SidebarMenuComponent implements OnInit {
+  isManageShown = false;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {}
 
+  hideSubmenus() {
+    this.isManageShown = false;
+  }
+
+  toggleManage() {
+    this.isManageShown = !this.isManageShown;
+  }
 }

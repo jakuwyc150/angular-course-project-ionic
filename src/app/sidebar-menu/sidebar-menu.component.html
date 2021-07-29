@@ -1,4 +1,4 @@
-<ion-menu side="start" contentId="menu-content">
+<ion-menu (ionDidClose)="hideSubmenus()" side="start" contentId="menu-content">
   <ion-header>
     <ion-toolbar>
       <ion-title>Recipe Book</ion-title>
@@ -21,9 +21,19 @@
 
   <ion-footer>
     <ion-list>
-      <ion-item>
+      <ion-item (click)="toggleManage()">
         <ion-icon class="ion-margin-horizontal" name="settings" color="warning"></ion-icon>
         <ion-label>Manage</ion-label>
+      </ion-item>
+
+      <ion-item *ngIf="isManageShown" style="margin-left: 15%;">
+        <ion-icon class="ion-margin-horizontal" name="cloud-download-outline"></ion-icon>
+        <ion-label>Fetch Data</ion-label>
+      </ion-item>
+
+      <ion-item *ngIf="isManageShown" style="margin-left: 15%;">
+        <ion-icon class="ion-margin-horizontal" name="cloud-upload-outline"></ion-icon>
+        <ion-label>Save Data</ion-label>
       </ion-item>
 
       <ion-item>
