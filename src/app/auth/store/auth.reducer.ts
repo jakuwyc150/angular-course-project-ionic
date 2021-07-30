@@ -28,6 +28,7 @@ export const authReducer = createReducer(
     ...state,
 
     authError: null,
+    loading: false,
     user: new User(token, expirationDate, email, userID)
   })),
 

@@ -83,6 +83,18 @@ export class AuthEffects {
     dispatch: false
   });
 
+  redirect$ = createEffect(() => this.actions$.pipe(
+    ofType(AuthActions.authSuccess),
+
+    tap((authSuccessAction) => {
+      if (authSuccessAction.redirect === true) {
+        this.router.navigate(['/']);
+      }
+    })
+  ), {
+    dispatch: false
+  });
+
   constructor(
     private actions$: Actions,
     private http: HttpClient,
