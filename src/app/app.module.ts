@@ -12,6 +12,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { appReducer } from './store/app.reducer';
 import { RecipeEffects } from './recipes/store/recipe.effects';
+import { AuthEffects } from './auth/store/auth.effects';
 
 @NgModule({
   declarations: [AppComponent, SidebarMenuComponent],
@@ -22,7 +23,7 @@ import { RecipeEffects } from './recipes/store/recipe.effects';
     IonicModule.forRoot(),
     AppRoutingModule,
     StoreModule.forRoot(appReducer),
-    EffectsModule.forRoot([RecipeEffects]),
+    EffectsModule.forRoot([AuthEffects, RecipeEffects]),
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
