@@ -13,13 +13,13 @@ const initialState: State = {
 export const recipeReducer = createReducer(
   initialState,
 
-  on(RecipeActions.addRecipe, (state, { newRecipe }) => ({
+  on(RecipeActions.addRecipe, (state, { newRecipe }): State => ({
     ...state,
 
     recipes: [ ...state.recipes, newRecipe ]
   })),
 
-  on(RecipeActions.setRecipes, (state, { recipes }) => ({
+  on(RecipeActions.setRecipes, (state, { recipes }): State => ({
     ...state, recipes
   }))
 );

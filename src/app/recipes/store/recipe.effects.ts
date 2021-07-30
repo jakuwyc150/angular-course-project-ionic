@@ -8,7 +8,7 @@ import * as RecipeActions from "./recipe.actions";
 @Injectable()
 export class RecipeEffects {
   fetchRecipes$ = createEffect(() => this.actions$.pipe(
-    ofType(RecipeActions.FETCH_RECIPES),
+    ofType(RecipeActions.fetchRecipes),
 
     switchMap(() => {
       return this.http.get<Recipe[]>('https://angular-course-project-db-default-rtdb.europe-west1.firebasedatabase.app/recipes.json').pipe(
