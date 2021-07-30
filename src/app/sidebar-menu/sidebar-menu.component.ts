@@ -39,6 +39,11 @@ export class SidebarMenuComponent implements OnInit {
     this.menuController.close('menu-sidebar');
   }
 
+  navigateToShoppingList() {
+    this.router.navigate(['/shopping-list']);
+    this.menuController.close('menu-sidebar');
+  }
+
   onFetchDataClicked() {
     this.store.dispatch(RecipeActions.fetchRecipes());
     this.menuController.close('menu-sidebar');
