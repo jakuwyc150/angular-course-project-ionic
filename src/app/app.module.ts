@@ -13,12 +13,14 @@ import { EffectsModule } from '@ngrx/effects';
 import { appReducer } from './store/app.reducer';
 import { RecipeEffects } from './recipes/store/recipe.effects';
 import { AuthEffects } from './auth/store/auth.effects';
+import { CoreModule } from './core.module';
 
 @NgModule({
   declarations: [AppComponent, SidebarMenuComponent],
   entryComponents: [],
   imports: [
     BrowserModule,
+    CoreModule,
     HttpClientModule,
     IonicModule.forRoot(),
     AppRoutingModule,
