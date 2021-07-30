@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 
 export const authFail = createAction('[AUTH] AUTH_FAIL', props<{ authError: string }>());
+export const autoLogin = createAction('[AUTH] AUTO_LOGIN');
 export const loginStart = createAction('[AUTH] LOGIN_START', props<{ email: string; password: string }>());
 export const logout = createAction('[AUTH] LOGOUT');
 

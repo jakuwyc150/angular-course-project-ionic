@@ -52,6 +52,38 @@ const handleError = (errorResponse: any) => {
 
 @Injectable()
 export class AuthEffects {
+  autoLogin$ = createEffect(() => this.actions$.pipe(
+    ofType(AuthActions.autoLogin),
+
+    map(() => {
+      const userData = JSON.parse(localStorage.getItem('userData'));
+
+      if (!userData) {
+        return { type: '-' }; // Returns empty action.
+      }
+
+      const loadedUser = new User(
+        userData.rawToken,
+        new Date(userData.tokenExpirationDate),
+        userData.email,
+        userData.id
+      );
+
+      if (loadedUser.token) {
+        return AuthActions.authSuccess({
+          email: loadedUser.email,
+          token: loadedUser.token,
+          userID: loadedUser.id,
+
+          expirationDate: new Date(userData.tokenExpirationDate),
+          redirect: false
+        });
+      }
+
+      return { type: '-' }; // Returns empty action.
+    })
+  ));
+
   loginStart$ = createEffect(() => this.actions$.pipe(
     ofType(AuthActions.loginStart),
 
