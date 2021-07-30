@@ -34,6 +34,11 @@ export class SidebarMenuComponent implements OnInit {
     this.isManageShown = false;
   }
 
+  navigateToAuthForm() {
+    this.router.navigate(['/auth-form']);
+    this.menuController.close('menu-sidebar');
+  }
+
   navigateToRecipes() {
     this.router.navigate(['/recipes']);
     this.menuController.close('menu-sidebar');
