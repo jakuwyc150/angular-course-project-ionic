@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -14,12 +15,17 @@ export class ShoppingListPage implements OnInit {
   ingredients$: Observable<Ingredient[]>;
 
   constructor(
-    private store: Store<fromRoot.AppState>
+    private store: Store<fromRoot.AppState>,
+    private router: Router
   ) {}
 
   ngOnInit() {
     this.ingredients$ = this.store.select('shoppingList').pipe(
       map(shoppingListState => shoppingListState.ingredients)
     );
+  }
+
+  navigateToIngredientForm() {
+    this.router.navigate(['/shopping-list/new']);
   }
 }

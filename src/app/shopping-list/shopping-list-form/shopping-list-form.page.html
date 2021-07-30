@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/shopping-list"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title class="ion-text-center">{{ pageTitle }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <form class="ion-padding" [formGroup]="ingredientForm" (ngSubmit)="formSubmit()">
+          <ion-item>
+            <ion-label position="floating">Ingredient Name</ion-label>
+            <ion-input type="text" formControlName="ingredientName"></ion-input>
+          </ion-item>
+
+          <ion-item class="ion-margin-top">
+            <ion-label position="floating">Ingredient Amount</ion-label>
+            <ion-input type="number" formControlName="ingredientAmount"></ion-input>
+          </ion-item>
+
+          <ion-button [disabled]="!dirty" (click)="clearForm()" type="button" class="ion-margin-top" color="danger" expand="block">Clear</ion-button>
+          <ion-button [disabled]="!ingredientForm.valid" type="submit" class="ion-margin-top" color="success" expand="block">Add Ingredient</ion-button>
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

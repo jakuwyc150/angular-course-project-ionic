@@ -14,7 +14,7 @@ import * as RecipeActions from '../store/recipe.actions';
 })
 export class RecipeFormPage implements OnInit {
   dirty = false;
-  pageTitle: string = 'Add Recipe';
+  pageTitle = 'Add Recipe';
   recipeForm: FormGroup;
 
   constructor(
@@ -23,29 +23,6 @@ export class RecipeFormPage implements OnInit {
     private router: Router,
     private store: Store<fromRoot.AppState>
   ) {}
-
-  private initForm() {
-    this.recipeForm = this.formBuilder.group({
-      recipeName: ['', [
-        Validators.required,
-        Validators.minLength(3)
-      ]],
-
-      recipeDescription: ['', [
-        Validators.required,
-        Validators.minLength(5)
-      ]],
-
-      recipeImageURL: ['', [
-        Validators.required,
-        Validators.pattern("http(s)?:\/\/[^\n]*")
-      ]]
-    });
-
-    this.recipeForm.valueChanges.subscribe(value => {
-      this.dirty = value.recipeName !== '' || value.recipeDescription !== '' || value.recipeImageURL !== ''
-    });
-  }
 
   clearForm() {
     this.recipeForm.reset();
@@ -68,17 +45,40 @@ export class RecipeFormPage implements OnInit {
 
     const alert = await this.alertController.create({
       buttons: [{
-        text: "OK",
+        text: 'OK',
         handler: () => {
           this.router.navigate(['/recipes']);
         }
       }],
 
       backdropDismiss: false,
-      header: "Info",
-      message: "New recipe added!"
+      header: 'Info',
+      message: 'New recipe added!'
     });
 
     await alert.present();
+  }
+
+  private initForm() {
+    this.recipeForm = this.formBuilder.group({
+      recipeName: ['', [
+        Validators.required,
+        Validators.minLength(3)
+      ]],
+
+      recipeDescription: ['', [
+        Validators.required,
+        Validators.minLength(5)
+      ]],
+
+      recipeImageURL: ['', [
+        Validators.required,
+        Validators.pattern('http(s)?:\/\/[^\n]*')
+      ]]
+    });
+
+    this.recipeForm.valueChanges.subscribe(value => {
+      this.dirty = value.recipeName !== '' || value.recipeDescription !== '' || value.recipeImageURL !== '';
+    });
   }
 }

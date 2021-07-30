@@ -4,10 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { ShoppingListPage } from './shopping-list.page';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: ShoppingListPage
-  }
+  { path: '', component: ShoppingListPage },
+  { path: 'new', loadChildren: () => import('./shopping-list-form/shopping-list-form.module').then( m => m.ShoppingListFormPageModule) }
 ];
 
 @NgModule({
