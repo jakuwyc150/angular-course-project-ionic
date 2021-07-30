@@ -29,11 +29,14 @@ export class AuthFormPage implements OnInit {
       this.isLoading = authState.loading;
 
       if (this.error) {
-        await this.alertController.create({
+        const alert = await this.alertController.create({
+          backdropDismiss: false,
           buttons: ['OK'],
           header: 'Authentication failed',
           message: this.error
         });
+
+        await alert.present();
       }
     });
   }
