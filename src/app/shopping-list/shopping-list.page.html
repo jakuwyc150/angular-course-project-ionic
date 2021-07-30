@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Shopping List</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row *ngIf="(ingredients$ | async).length === 0">
+      <ion-col>
+        <ion-item>
+          <ion-label class="ion-text-center">
+            <i>No ingredients found</i>
+          </ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngFor="let ingredient of (ingredients$ | async)">
+      <ion-col size="9">
+        <ion-item>
+          <ion-label>
+            {{ ingredient.name }}
+          </ion-label>
+        </ion-item>
+      </ion-col>
+
+      <ion-col size="3">
+        <ion-item>
+          <ion-label class="ion-text-right">
+            {{ ingredient.amount }}
+          </ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-button color="success" expand="block">New ingredient</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

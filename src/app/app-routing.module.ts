@@ -4,8 +4,9 @@ import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/recipes', pathMatch: 'full'},
-  { path: 'recipes', canActivate: [AuthGuard], loadChildren: () => import('./recipes/recipes.module').then( m => m.RecipesPageModule) },
   { path: 'auth-form', loadChildren: () => import('./auth/auth-form/auth-form.module').then( m => m.AuthFormPageModule) },
+  { path: 'recipes', canActivate: [AuthGuard], loadChildren: () => import('./recipes/recipes.module').then( m => m.RecipesPageModule) },
+  { path: 'shopping-list', loadChildren: () => import('./shopping-list/shopping-list.module').then( m => m.ShoppingListPageModule) },
 ];
 
 @NgModule({
