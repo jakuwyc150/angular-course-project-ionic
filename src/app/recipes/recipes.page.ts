@@ -4,7 +4,6 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as fromRoot from '../store/app.reducer';
-import * as RecipeActions from './store/recipe.actions';
 import { Router } from '@angular/router';
 
 @Component({
@@ -22,9 +21,7 @@ export class RecipesPage implements OnInit {
 
   ngOnInit() {
     this.recipes$ = this.store.select('recipes').pipe(
-      map(state => {
-        return state.recipes;
-      })
+      map(state => state.recipes)
     );
   }
 

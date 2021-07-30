@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import * as fromRoot from '../store/app.reducer';
-import * as RecipeActions from '../recipes/store/recipe.actions';
 import { Router } from '@angular/router';
 import { MenuController } from '@ionic/angular';
+import { Observable } from 'rxjs';
+import * as fromRoot from '../store/app.reducer';
+import * as AuthActions from '../auth/store/auth.actions';
+import * as RecipeActions from '../recipes/store/recipe.actions';
+import { map } from 'rxjs/operators';
+import { User } from '../auth/user.model';
 
 @Component({
   selector: 'app-sidebar-menu',
@@ -11,6 +15,7 @@ import { MenuController } from '@ionic/angular';
   styleUrls: ['./sidebar-menu.component.scss'],
 })
 export class SidebarMenuComponent implements OnInit {
+  loggedUser$: Observable<User>;
   isManageShown = false;
 
   constructor(
@@ -19,7 +24,11 @@ export class SidebarMenuComponent implements OnInit {
     private store: Store<fromRoot.AppState>
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loggedUser$ = this.store.select('auth').pipe(
+      map(authState => authState.user)
+    );
+  }
 
   hideSubmenus() {
     this.isManageShown = false;
@@ -32,6 +41,12 @@ export class SidebarMenuComponent implements OnInit {
 
   onFetchDataClicked() {
     this.store.dispatch(RecipeActions.fetchRecipes());
+    this.menuController.close('menu-sidebar');
+  }
+
+  onLogoutClicked() {
+    this.store.dispatch(AuthActions.logout());
+    this.menuController.close('menu-sidebar');
   }
 
   toggleManage() {
