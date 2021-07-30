@@ -39,7 +39,7 @@ export class ShoppingListFormPage implements OnInit {
 
   async formSubmit() {
     this.store.dispatch(ShoppingListActions.addIngredient({
-      ingredient: new Ingredient(
+      newIngredient: new Ingredient(
         this.ingredientForm.value.ingredientName,
         this.ingredientForm.value.ingredientAmount
       )

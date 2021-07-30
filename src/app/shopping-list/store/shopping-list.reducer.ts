@@ -13,9 +13,20 @@ const initialState: State = {
 export const shoppingListReducer = createReducer(
   initialState,
 
-  on(ShoppingListActions.addIngredient, (state, { ingredient }): State => ({
-    ...state,
+  on(ShoppingListActions.addIngredient, (state, { newIngredient }): State => {
+    const newIngredients = [ ...state.ingredients ];
+    const existingIngredientIndex = newIngredients.findIndex(ingredient => ingredient.name === newIngredient.name);
 
-    ingredients: [ ...state.ingredients, ingredient ]
-  }))
+    if (existingIngredientIndex > -1) {
+      const currentAmount = newIngredients[existingIngredientIndex].amount;
+      newIngredients.splice(existingIngredientIndex, 1, new Ingredient(newIngredient.name, currentAmount + newIngredient.amount));
+    } else {
+      newIngredients.push(newIngredient);
+    }
+
+    return {
+      ...state,
+      ingredients: newIngredients
+    };
+  })
 );
