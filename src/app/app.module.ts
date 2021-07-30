@@ -11,9 +11,8 @@ import { SidebarMenuComponent } from './sidebar-menu/sidebar-menu.component';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { appReducer } from './store/app.reducer';
-import { RecipeEffects } from './recipes/store/recipe.effects';
-import { AuthEffects } from './auth/store/auth.effects';
 import { CoreModule } from './core.module';
+import { appEffects } from './store/app.effects';
 
 @NgModule({
   declarations: [AppComponent, SidebarMenuComponent],
@@ -25,7 +24,7 @@ import { CoreModule } from './core.module';
     IonicModule.forRoot(),
     AppRoutingModule,
     StoreModule.forRoot(appReducer),
-    EffectsModule.forRoot([AuthEffects, RecipeEffects]),
+    EffectsModule.forRoot(appEffects),
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
