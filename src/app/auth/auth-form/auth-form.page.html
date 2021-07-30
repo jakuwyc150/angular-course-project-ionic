@@ -1,9 +1,33 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>auth-form</ion-title>
+    <ion-title>Sign in</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-grid class="full-height">
+    <ion-row *ngIf="!isLoading">
+      <ion-col>
+        <form class="ion-padding" [formGroup]="authForm" (ngSubmit)="formSubmit()">
+          <ion-item>
+            <ion-label position="floating">Email address</ion-label>
+            <ion-input type="email" formControlName="userEmail"></ion-input>
+          </ion-item>
 
+          <ion-item class="ion-margin-top">
+            <ion-label position="floating">Password</ion-label>
+            <ion-input type="password" formControlName="userPassword"></ion-input>
+          </ion-item>
+
+          <ion-button [disabled]="!authForm.valid" type="submit" class="ion-margin-top" expand="block">Sign in</ion-button>
+        </form>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="full-height" *ngIf="isLoading">
+      <ion-col class="full-height flex-center">
+        <ion-spinner></ion-spinner>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
