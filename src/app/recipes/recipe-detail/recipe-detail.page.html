@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/recipes"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title class="ion-text-center" *ngIf="selectedRecipe$ | async">
+      {{ (selectedRecipe$ | async).name }}
+    </ion-title>
+
+    <ion-title class="ion-text-center" *ngIf="!(selectedRecipe$ | async)">
+      <i>No recipe selected</i>
+    </ion-title>
+
+    <ion-buttons *ngIf="selectedRecipe$ | async" slot="end">
+      <ion-button>
+        <ion-icon slot="icon-only" name="trash"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid *ngIf="selectedRecipe$ | async">
+    <ion-row>
+      <ion-col>
+        <ion-img [src]="(selectedRecipe$ | async).imagePath"></ion-img>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label>
+            {{ (selectedRecipe$ | async).description }}
+          </ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="(selectedRecipe$ | async)?.ingredients.length > 0" class="ion-margin-top">
+      <ion-col class="ion-text-center">
+        <ion-label>
+          Required ingredients
+        </ion-label>
+
+        <ion-list class="ion-margin-top">
+          <ion-item *ngFor="let ingredient of (selectedRecipe$ | async).ingredients">
+            <ion-label>
+              {{ ingredient.name }} ({{ ingredient.amount }})
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
