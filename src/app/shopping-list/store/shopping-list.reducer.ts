@@ -15,18 +15,32 @@ export const shoppingListReducer = createReducer(
 
   on(ShoppingListActions.addIngredient, (state, { newIngredient }): State => {
     const newIngredients = [ ...state.ingredients ];
-    const existingIngredientIndex = newIngredients.findIndex(ingredient => ingredient.name === newIngredient.name);
-
-    if (existingIngredientIndex > -1) {
-      const currentAmount = newIngredients[existingIngredientIndex].amount;
-      newIngredients.splice(existingIngredientIndex, 1, new Ingredient(newIngredient.name, currentAmount + newIngredient.amount));
-    } else {
-      newIngredients.push(newIngredient);
-    }
+    addOrCombine(newIngredients, newIngredient);
 
     return {
       ...state,
       ingredients: newIngredients
     };
+  }),
+
+  on(ShoppingListActions.addIngredients, (state, { newIngredients }): State => {
+    const newIngredientsArray = [ ...state.ingredients ];
+    newIngredients.forEach(ingredient => addOrCombine(newIngredientsArray, ingredient));
+
+    return {
+      ...state,
+      ingredients: newIngredientsArray
+    };
   })
 );
+
+const addOrCombine = <T> (array: Ingredient[], newIngredient: Ingredient) => {
+  const ingredientIndex = array.findIndex(ingredient => ingredient.name === newIngredient.name);
+
+  if (ingredientIndex > -1) {
+    const currentAmount = array[ingredientIndex].amount;
+    array.splice(ingredientIndex, 1, new Ingredient(newIngredient.name, currentAmount + newIngredient.amount));
+  } else {
+    array.push(newIngredient);
+  }
+};

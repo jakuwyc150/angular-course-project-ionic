@@ -14,7 +14,7 @@ import * as ShoppingListActions from '../store/shopping-list.actions';
 })
 export class ShoppingListFormPage implements OnInit {
   dirty = false;
-  pageTitle = 'Add Ingredient'
+  pageTitle = 'Add Ingredient';
   ingredientForm: FormGroup;
 
   constructor(
