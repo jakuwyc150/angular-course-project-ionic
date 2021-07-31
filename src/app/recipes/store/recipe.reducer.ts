@@ -22,6 +22,13 @@ export const recipeReducer = createReducer(
     recipes: [ ...state.recipes, newRecipe ]
   })),
 
+  on(RecipeActions.removeSelectedRecipe, (state): State => ({
+    ...state,
+
+    recipes: state.recipes.filter(recipe => recipe !== state.selectedDetails),
+    selectedDetails: null
+  })),
+
   on(RecipeActions.selectDetails, (state, { selectedRecipe }): State => ({
     ...state,
 

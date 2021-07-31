@@ -13,7 +13,7 @@
     </ion-title>
 
     <ion-buttons *ngIf="selectedRecipe$ | async" slot="end">
-      <ion-button>
+      <ion-button (click)="removeRecipe()">
         <ion-icon slot="icon-only" name="trash"></ion-icon>
       </ion-button>
     </ion-buttons>
