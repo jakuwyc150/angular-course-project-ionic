@@ -1,3 +1,5 @@
+<!-- eslint-disable -->
+
 <ion-menu contentId="menu-content" (ionDidClose)="hideSubmenus()" menuId="menu-sidebar" side="start">
   <ion-header>
     <ion-toolbar>
@@ -36,7 +38,7 @@
         <ion-label>Fetch Data</ion-label>
       </ion-item>
 
-      <ion-item class="item-submenu" *ngIf="isManageShown">
+      <ion-item class="item-submenu" *ngIf="isManageShown" (click)="onSaveDataClicked()">
         <ion-icon class="ion-margin-horizontal" name="cloud-upload-outline"></ion-icon>
         <ion-label>Save Data</ion-label>
       </ion-item>

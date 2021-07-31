@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
-import { MenuController } from '@ionic/angular';
+import { AlertController, MenuController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import * as fromRoot from '../store/app.reducer';
 import * as AuthActions from '../auth/store/auth.actions';
@@ -19,6 +19,7 @@ export class SidebarMenuComponent implements OnInit {
   isManageShown = false;
 
   constructor(
+    private alertController: AlertController,
     private menuController: MenuController,
     private router: Router,
     private store: Store<fromRoot.AppState>
@@ -52,6 +53,31 @@ export class SidebarMenuComponent implements OnInit {
   onFetchDataClicked() {
     this.store.dispatch(RecipeActions.fetchRecipes());
     this.menuController.close('menu-sidebar');
+  }
+
+  async onSaveDataClicked() {
+    this.menuController.close('menu-sidebar');
+
+    const alert = await this.alertController.create({
+      buttons: [
+        {
+          text: 'Cancel'
+        },
+
+        {
+          text: 'OK',
+          handler: () => {
+            this.store.dispatch(RecipeActions.saveRecipes());
+          }
+        }
+      ],
+
+      backdropDismiss: false,
+      header: 'Confirm',
+      message: 'Are you sure you would like to save all data?'
+    });
+
+    await alert.present();
   }
 
   onLogoutClicked() {
