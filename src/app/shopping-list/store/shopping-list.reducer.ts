@@ -56,6 +56,11 @@ export const shoppingListReducer = createReducer(
     }
   })),
 
+  on(ShoppingListActions.removeEditedIngredient, (state): State => ({
+    ...state,
+    ingredients: state.ingredients.filter(ingredient => ingredient !== state.editData.editedIngredient)
+  })),
+
   on(ShoppingListActions.startEdit, (state, { editedIndex, editedIngredient }): State => ({
     ...state,
 

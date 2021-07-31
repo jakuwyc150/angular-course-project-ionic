@@ -92,6 +92,30 @@ export class ShoppingListFormPage implements OnInit, OnDestroy {
     }
   }
 
+  async removeEditedIngredient() {
+    const alert = await this.alertController.create({
+      buttons: [
+        {
+          text: 'Cancel'
+        },
+
+        {
+          text: 'OK',
+          handler: () => {
+            this.store.dispatch(ShoppingListActions.removeEditedIngredient());
+            this.router.navigate(['/shopping-list']);
+          }
+        }
+      ],
+
+      backdropDismiss: false,
+      header: 'Confirm',
+      message: 'Are you sure you would like to remove this ingredient from shopping list?'
+    });
+
+    await alert.present();
+  }
+
   private initForm(ingredient: Ingredient) {
     this.ingredientForm = this.formBuilder.group({
       ingredientName: [ingredient ? ingredient.name : '', [
