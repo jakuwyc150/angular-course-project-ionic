@@ -74,6 +74,7 @@ export class RecipeFormPage implements OnInit, OnDestroy {
         newRecipe: updatedRecipe
       }));
 
+      this.router.navigate(['/recipes']);
       this.showAlert('Recipe updated!');
     } else {
       this.store.dispatch(RecipeActions.addRecipe({
@@ -85,6 +86,7 @@ export class RecipeFormPage implements OnInit, OnDestroy {
         )
       }));
 
+      this.router.navigate(['/recipes']);
       this.showAlert('New recipe added!');
     }
   }
@@ -113,8 +115,6 @@ export class RecipeFormPage implements OnInit, OnDestroy {
   }
 
   private async showAlert(message: string) {
-    this.router.navigate(['/recipes']);
-
     const alert = await this.alertController.create({
       backdropDismiss: true,
       buttons: ['OK'],

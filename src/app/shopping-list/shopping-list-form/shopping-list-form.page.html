@@ -5,6 +5,12 @@
     </ion-buttons>
 
     <ion-title class="ion-text-center">{{ pageTitle }}</ion-title>
+
+    <ion-buttons *ngIf="editedIngredientData" slot="end">
+      <ion-button (click)="removeEditedIngredient()">
+        <ion-icon slot="icon-only" name="trash"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -24,7 +30,7 @@
           </ion-item>
 
           <ion-button [disabled]="!dirty" (click)="clearForm()" type="button" class="ion-margin-top" color="danger" expand="block">Clear</ion-button>
-          <ion-button [disabled]="!ingredientForm.valid" type="submit" class="ion-margin-top" color="success" expand="block">Add Ingredient</ion-button>
+          <ion-button [disabled]="!ingredientForm.valid" type="submit" class="ion-margin-top" color="success" expand="block">{{ submitButtonLabel }}</ion-button>
         </form>
       </ion-col>
     </ion-row>

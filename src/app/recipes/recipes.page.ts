@@ -1,19 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Recipe } from './recipe.model';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { map, take, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import * as fromRoot from '../store/app.reducer';
 import * as RecipeActions from './store/recipe.actions';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-recipes',
   templateUrl: './recipes.page.html',
   styleUrls: ['./recipes.page.scss'],
 })
-export class RecipesPage implements OnInit {
-  recipes$: Observable<Recipe[]>;
+export class RecipesPage implements OnInit, OnDestroy {
+  recipes: Recipe[] = [];
+
+  private recipesStateSubscription: Subscription;
 
   constructor(
     private router: Router,
@@ -25,32 +26,30 @@ export class RecipesPage implements OnInit {
   }
 
   editRecipe(recipeIndex: number) {
-    this.recipes$.pipe(
-      take(1)
-    ).subscribe(recipes => {
-      this.store.dispatch(RecipeActions.startEdit({
-        editedIndex: recipeIndex,
-        editedRecipe: recipes[recipeIndex]
-      }));
+    this.store.dispatch(RecipeActions.startEdit({
+      editedIndex: recipeIndex,
+      editedRecipe: this.recipes[recipeIndex]
+    }));
 
-      this.router.navigate(['/recipes/recipe-form']);
-    });
+    this.router.navigate(['/recipes/recipe-form']);
   }
 
   ngOnInit() {
-    this.recipes$ = this.store.select('recipes').pipe(
-      map(state => state.recipes)
-    );
+    this.recipesStateSubscription = this.store.select('recipes').subscribe(recipesState => {
+      this.recipes = recipesState.recipes;
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.recipesStateSubscription) {
+      this.recipesStateSubscription.unsubscribe();
+    }
   }
 
   navigateToRecipeDetails(recipeIndex: number) {
-    this.recipes$.pipe(
-      take(1),
-    ).subscribe(recipes => {
-      const selectedRecipe = recipes[recipeIndex];
+    const selectedRecipe = this.recipes[recipeIndex];
 
-      this.store.dispatch(RecipeActions.selectDetails({ selectedRecipe }));
-      this.router.navigate(['/recipes/details']);
-    });
+    this.store.dispatch(RecipeActions.selectDetails({ selectedRecipe }));
+    this.router.navigate(['/recipes/details']);
   }
 }
