@@ -6,7 +6,7 @@
 
 <ion-content>
   <ion-grid>
-    <ion-row *ngIf="(ingredients$ | async).length === 0">
+    <ion-row *ngIf="ingredients.length === 0">
       <ion-col>
         <ion-item>
           <ion-label class="ion-text-center">
@@ -16,8 +16,8 @@
       </ion-col>
     </ion-row>
 
-    <ion-row *ngFor="let ingredient of (ingredients$ | async)">
-      <ion-col size="9">
+    <ion-row *ngFor="let ingredient of ingredients; let ingredientIndex = index">
+      <ion-col size="7">
         <ion-item>
           <ion-label>
             {{ ingredient.name }}
@@ -32,11 +32,17 @@
           </ion-label>
         </ion-item>
       </ion-col>
+
+      <ion-col (click)="editIngredient(ingredientIndex)" class="flex-center" size="2">
+        <ion-button fill="clear" color="dark">
+          <ion-icon slot="icon-only" name="settings-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
     </ion-row>
 
     <ion-row>
       <ion-col>
-        <ion-button (click)="navigateToIngredientForm()" color="success" expand="block">New ingredient</ion-button>
+        <ion-button (click)="addIngredient()" color="success" expand="block">New ingredient</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>
