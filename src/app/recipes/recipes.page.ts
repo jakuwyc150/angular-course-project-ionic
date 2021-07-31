@@ -20,6 +20,23 @@ export class RecipesPage implements OnInit {
     private store: Store<fromRoot.AppState>
   ) {}
 
+  addRecipe() {
+    this.router.navigate(['/recipes/recipe-form']);
+  }
+
+  editRecipe(recipeIndex: number) {
+    this.recipes$.pipe(
+      take(1)
+    ).subscribe(recipes => {
+      this.store.dispatch(RecipeActions.startEdit({
+        editedIndex: recipeIndex,
+        editedRecipe: recipes[recipeIndex]
+      }));
+
+      this.router.navigate(['/recipes/recipe-form']);
+    });
+  }
+
   ngOnInit() {
     this.recipes$ = this.store.select('recipes').pipe(
       map(state => state.recipes)
@@ -35,9 +52,5 @@ export class RecipesPage implements OnInit {
       this.store.dispatch(RecipeActions.selectDetails({ selectedRecipe }));
       this.router.navigate(['/recipes/details']);
     });
-  }
-
-  navigateToRecipeForm() {
-    this.router.navigate(['/recipes/new']);
   }
 }

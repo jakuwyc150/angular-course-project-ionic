@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
-import * as fromRoot from '../../store/app.reducer';
+import { map } from 'rxjs/operators';
 import { Recipe } from '../recipe.model';
+import { Subscription } from 'rxjs';
+import * as fromRoot from '../../store/app.reducer';
+import * as fromRecipes from '../store/recipe.reducer';
 import * as RecipeActions from '../store/recipe.actions';
 
 @Component({
@@ -12,10 +15,14 @@ import * as RecipeActions from '../store/recipe.actions';
   templateUrl: './recipe-form.page.html',
   styleUrls: ['./recipe-form.page.scss'],
 })
-export class RecipeFormPage implements OnInit {
+export class RecipeFormPage implements OnInit, OnDestroy {
+  editedRecipeData: fromRecipes.RecipeEditData = null;
   dirty = false;
   pageTitle = 'Add Recipe';
   recipeForm: FormGroup;
+  submitButtonLabel = 'Add Recipe';
+
+  private recipesStateSubscription: Subscription;
 
   constructor(
     private alertController: AlertController,
@@ -30,48 +37,71 @@ export class RecipeFormPage implements OnInit {
   }
 
   ngOnInit() {
-    this.initForm();
-  }
+    this.recipesStateSubscription = this.store.select('recipes').pipe(
+      map(recipeState => recipeState.editData)
+    ).subscribe(recipeEditData => {
+      if (recipeEditData.editing === true) {
+        this.dirty = true;
+        this.pageTitle = 'Edit Recipe';
+        this.editedRecipeData = recipeEditData;
+        this.submitButtonLabel = 'Save';
 
-  async formSubmit() {
-    this.store.dispatch(RecipeActions.addRecipe({
-      newRecipe: new Recipe(
-        this.recipeForm.value.recipeName,
-        this.recipeForm.value.recipeDescription,
-        this.recipeForm.value.recipeImageURL,
-        []
-      )
-    }));
-
-    const alert = await this.alertController.create({
-      buttons: [{
-        text: 'OK',
-        handler: () => {
-          this.router.navigate(['/recipes']);
-        }
-      }],
-
-      backdropDismiss: false,
-      header: 'Info',
-      message: 'New recipe added!'
+        this.initForm(recipeEditData.editedRecipe);
+      } else {
+        this.initForm(null);
+      }
     });
-
-    await alert.present();
   }
 
-  private initForm() {
+  ngOnDestroy() {
+    this.store.dispatch(RecipeActions.finishEdit());
+
+    if (this.recipesStateSubscription) {
+      this.recipesStateSubscription.unsubscribe();
+    }
+  }
+
+  formSubmit() {
+    if (this.editedRecipeData) {
+      const updatedRecipe = { ...this.editedRecipeData.editedRecipe };
+
+      updatedRecipe.name = this.recipeForm.value.recipeName;
+      updatedRecipe.description = this.recipeForm.value.recipeDescription;
+      updatedRecipe.imagePath = this.recipeForm.value.recipeImageURL;
+
+      this.store.dispatch(RecipeActions.updateRecipe({
+        index: this.editedRecipeData.editedIndex,
+        newRecipe: updatedRecipe
+      }));
+
+      this.showAlert('Recipe updated!');
+    } else {
+      this.store.dispatch(RecipeActions.addRecipe({
+        newRecipe: new Recipe(
+          this.recipeForm.value.recipeName,
+          this.recipeForm.value.recipeDescription,
+          this.recipeForm.value.recipeImageURL,
+          []
+        )
+      }));
+
+      this.showAlert('New recipe added!');
+    }
+  }
+
+  private initForm(recipe: Recipe) {
     this.recipeForm = this.formBuilder.group({
-      recipeName: ['', [
+      recipeName: [recipe ? recipe.name : '', [
         Validators.required,
         Validators.minLength(3)
       ]],
 
-      recipeDescription: ['', [
+      recipeDescription: [recipe ? recipe.description : '', [
         Validators.required,
         Validators.minLength(5)
       ]],
 
-      recipeImageURL: ['', [
+      recipeImageURL: [recipe ? recipe.imagePath : '', [
         Validators.required,
         Validators.pattern('http(s)?:\/\/[^\n]*')
       ]]
@@ -80,5 +110,18 @@ export class RecipeFormPage implements OnInit {
     this.recipeForm.valueChanges.subscribe(value => {
       this.dirty = value.recipeName !== '' || value.recipeDescription !== '' || value.recipeImageURL !== '';
     });
+  }
+
+  private async showAlert(message: string) {
+    this.router.navigate(['/recipes']);
+
+    const alert = await this.alertController.create({
+      backdropDismiss: true,
+      buttons: ['OK'],
+      header: 'Info',
+      message
+    });
+
+    await alert.present();
   }
 }
