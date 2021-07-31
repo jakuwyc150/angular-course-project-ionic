@@ -16,15 +16,23 @@
       </ion-col>
     </ion-row>
 
-    <ion-row *ngFor="let recipe of (recipes$ | async)">
+    <ion-row *ngFor="let recipe of (recipes$ | async); let recipeIndex = index">
       <ion-col>
-        <ion-item>
-          <ion-avatar class="ion-margin-end">
-            <img [src]="recipe.imagePath">
-          </ion-avatar>
+        <ion-toolbar>
+          <ion-item (click)="navigateToRecipeDetails(recipeIndex)">
+            <ion-avatar class="ion-margin-end">
+              <img [src]="recipe.imagePath">
+            </ion-avatar>
 
-          <ion-label>{{ recipe.name }}</ion-label>
-        </ion-item>
+            <ion-label>{{ recipe.name }}</ion-label>
+          </ion-item>
+
+          <ion-buttons slot="end">
+            <ion-button>
+              <ion-icon slot="icon-only" name="settings-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
       </ion-col>
     </ion-row>
 
