@@ -16,7 +16,7 @@
       </ion-col>
     </ion-row>
 
-    <ion-row *ngFor="let ingredient of ingredients; let ingredientIndex = index">
+    <ion-row *ngFor="let ingredient of ingredients; index as ingredientIndex">
       <ion-col size="7">
         <ion-item>
           <ion-label>

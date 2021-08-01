@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 import * as fromRoot from '../../store/app.reducer';
 import * as fromRecipes from '../store/recipe.reducer';
 import * as RecipeActions from '../store/recipe.actions';
+import { Ingredient } from 'src/app/shared/ingredient.model';
 
 @Component({
   selector: 'app-recipe-form',
@@ -30,6 +31,26 @@ export class RecipeFormPage implements OnInit, OnDestroy {
     private router: Router,
     private store: Store<fromRoot.AppState>
   ) {}
+
+  get recipeIngredients() {
+    return this.recipeForm.controls.recipeIngredients as FormArray;
+  }
+
+  addIngredient() {
+    const ingredientForm = this.formBuilder.group({
+      ingredientName: ['', [
+        Validators.required,
+        Validators.minLength(3)
+      ]],
+
+      ingredientAmount: [0, [
+        Validators.required,
+        Validators.min(0)
+      ]]
+    });
+
+    this.recipeIngredients.push(ingredientForm);
+  }
 
   clearForm() {
     this.recipeForm.reset();
@@ -69,6 +90,11 @@ export class RecipeFormPage implements OnInit, OnDestroy {
       updatedRecipe.description = this.recipeForm.value.recipeDescription;
       updatedRecipe.imagePath = this.recipeForm.value.recipeImageURL;
 
+      updatedRecipe.ingredients = this.recipeForm.value.recipeIngredients.map(formValue => new Ingredient(
+        formValue.ingredientName,
+        formValue.ingredientAmount
+      ));
+
       this.store.dispatch(RecipeActions.updateRecipe({
         index: this.editedRecipeData.editedIndex,
         newRecipe: updatedRecipe
@@ -82,13 +108,21 @@ export class RecipeFormPage implements OnInit, OnDestroy {
           this.recipeForm.value.recipeName,
           this.recipeForm.value.recipeDescription,
           this.recipeForm.value.recipeImageURL,
-          []
+
+          this.recipeForm.value.recipeIngredients.map(formValue => new Ingredient(
+            formValue.ingredientName,
+            formValue.ingredientAmount
+          ))
         )
       }));
 
       this.router.navigate(['/recipes']);
       this.showAlert('New recipe added!');
     }
+  }
+
+  removeIngredient(index: number) {
+    this.recipeIngredients.removeAt(index);
   }
 
   private initForm(recipe: Recipe) {
@@ -106,7 +140,9 @@ export class RecipeFormPage implements OnInit, OnDestroy {
       recipeImageURL: [recipe ? recipe.imagePath : '', [
         Validators.required,
         Validators.pattern('http(s)?:\/\/[^\n]*')
-      ]]
+      ]],
+
+      recipeIngredients: this.formBuilder.array([])
     });
 
     this.recipeForm.valueChanges.subscribe(value => {

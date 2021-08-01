@@ -30,6 +30,31 @@
             <ion-input type="text" formControlName="recipeImageURL"></ion-input>
           </ion-item>
 
+          <div formArrayName="recipeIngredients">
+            <ion-row *ngFor="let ingredientForm of recipeIngredients.controls; index as ingredientIndex" [formGroupName]="ingredientIndex" class="ion-margin-top">
+              <ion-col size="6">
+                <ion-item>
+                  <ion-label position="floating">Name</ion-label>
+                  <ion-input type="text" formControlName="ingredientName"></ion-input>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="4">
+                <ion-item>
+                  <ion-label position="floating">Amount</ion-label>
+                  <ion-input type="text" formControlName="ingredientAmount"></ion-input>
+                </ion-item>
+              </ion-col>
+
+              <ion-col (click)="removeIngredient(ingredientIndex)" class="flex-center" size="2">
+                <ion-button fill="clear" color="dark">
+                  <ion-icon slot="icon-only" name="trash"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </div>
+
+          <ion-button (click)="addIngredient()" type="button" class="ion-margin-top" color="primary" expand="block">Add Ingredient</ion-button>
           <ion-button [disabled]="!dirty" (click)="clearForm()" type="button" class="ion-margin-top" color="danger" expand="block">Clear</ion-button>
           <ion-button [disabled]="!recipeForm.valid" type="submit" class="ion-margin-top" color="success" expand="block">{{ submitButtonLabel }}</ion-button>
         </form>
