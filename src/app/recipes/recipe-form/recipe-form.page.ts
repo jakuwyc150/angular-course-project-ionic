@@ -36,14 +36,14 @@ export class RecipeFormPage implements OnInit, OnDestroy {
     return this.recipeForm.controls.recipeIngredients as FormArray;
   }
 
-  addIngredient() {
+  addIngredient(ingredient: Ingredient) {
     const ingredientForm = this.formBuilder.group({
-      ingredientName: ['', [
+      ingredientName: [ingredient ? ingredient.name : '', [
         Validators.required,
         Validators.minLength(3)
       ]],
 
-      ingredientAmount: [0, [
+      ingredientAmount: [ingredient ? ingredient.amount : 0, [
         Validators.required,
         Validators.min(0)
       ]]
@@ -68,6 +68,10 @@ export class RecipeFormPage implements OnInit, OnDestroy {
         this.submitButtonLabel = 'Save';
 
         this.initForm(recipeEditData.editedRecipe);
+
+        recipeEditData.editedRecipe.ingredients.forEach(ingredient => {
+          this.addIngredient(ingredient);
+        });
       } else {
         this.initForm(null);
       }

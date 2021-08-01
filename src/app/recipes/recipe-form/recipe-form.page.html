@@ -54,7 +54,7 @@
             </ion-row>
           </div>
 
-          <ion-button (click)="addIngredient()" type="button" class="ion-margin-top" color="primary" expand="block">Add Ingredient</ion-button>
+          <ion-button (click)="addIngredient(null)" type="button" class="ion-margin-top" color="primary" expand="block">Add Ingredient</ion-button>
           <ion-button [disabled]="!dirty" (click)="clearForm()" type="button" class="ion-margin-top" color="danger" expand="block">Clear</ion-button>
           <ion-button [disabled]="!recipeForm.valid" type="submit" class="ion-margin-top" color="success" expand="block">{{ submitButtonLabel }}</ion-button>
         </form>
