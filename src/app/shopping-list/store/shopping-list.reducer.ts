@@ -81,7 +81,7 @@ export const shoppingListReducer = createReducer(
   })
 );
 
-const addOrCombine = <T> (array: Ingredient[], newIngredient: Ingredient) => {
+const addOrCombine = (array: Ingredient[], newIngredient: Ingredient) => {
   const ingredientIndex = array.findIndex(ingredient => ingredient.name === newIngredient.name);
 
   if (ingredientIndex > -1) {
